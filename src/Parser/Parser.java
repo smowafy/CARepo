@@ -3,12 +3,12 @@ package Parser;
 import java.util.HashMap;
 
 public class Parser {
-	HashMap<String, Integer> register;
-	HashMap<Integer, String> registerOpcode;
-	HashMap<String, Integer> instruction;
-	HashMap<Integer, String> instructionOpcode;
-	HashMap<String, Integer> function;
-	HashMap<Integer, String> functionOpcode;
+	private HashMap<String, Integer> register;
+	private HashMap<Integer, String> registerOpcode;
+	private HashMap<String, Integer> instruction;
+	private HashMap<Integer, String> instructionOpcode;
+	private HashMap<String, Integer> function;
+	private HashMap<Integer, String> functionOpcode;
 
 	public Parser() {
 		register = new HashMap<String, Integer>();
