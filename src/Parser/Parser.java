@@ -7,29 +7,80 @@ public class Parser {
 	HashMap<Integer, String> registerOpcode;
 	HashMap<String, Integer> instruction;
 	HashMap<Integer, String> instructionOpcode;
-	
-	public Parser()
-	{
+	HashMap<String, Integer> function;
+	HashMap<Integer, String> functionOpcode;
+
+	public Parser() {
 		register = new HashMap<String, Integer>();
 		registerOpcode = new HashMap<Integer, String>();
 		instruction = new HashMap<String, Integer>();
 		instructionOpcode = new HashMap<Integer, String>();
+		function = new HashMap<String, Integer>();
+		functionOpcode = new HashMap<Integer, String>();
 		initRegister();
 		initRegOp();
 		initInstr();
 		initInstrOp();
+		initFunc();
+		initFuncOp();
+	}
+
+	private void initFunc() {
+		function.put("add", 32);
+		function.put("sub", 34);
+		function.put("sll", 0);
+		function.put("srl", 2);
+		function.put("nor", 39);
+		function.put("slt", 42);
+		function.put("sltu", 41);
+		function.put("and", 36);
+		function.put("jr", 8);
+	}
+
+	private void initFuncOp() {
+		functionOpcode.put(32, "add");
+		functionOpcode.put(34, "sub");
+		functionOpcode.put(0, "sll");
+		functionOpcode.put(2, "srl");
+		functionOpcode.put(39, "nor");
+		functionOpcode.put(42, "slt");
+		functionOpcode.put(41, "sltu");
+		functionOpcode.put(36, "and");
+		functionOpcode.put(8, "jr");
 	}
 
 	private void initInstrOp() {
-		
+		instruction.put("addi", 8);
+		instruction.put("lw", 35);
+		instruction.put("lb", 32);
+		instruction.put("lbu", 36);
+		instruction.put("sw", 43);
+		instruction.put("sb", 40);
+		instruction.put("beq", 4);
+		instruction.put("bne", 5);
+		instruction.put("j", 2);
+		instruction.put("jal", 3);
+		instruction.put("lui", 15);
+
 	}
 
 	private void initInstr() {
-		
+		instructionOpcode.put(8, "addi");
+		instructionOpcode.put(35, "lw");
+		instructionOpcode.put(32, "lb");
+		instructionOpcode.put(36, "lbu");
+		instructionOpcode.put(43, "sw");
+		instructionOpcode.put(40, "sb");
+		instructionOpcode.put(4, "beq");
+		instructionOpcode.put(5, "bne");
+		instructionOpcode.put(2, "j");
+		instructionOpcode.put(3, "jal");
+		instructionOpcode.put(15, "lui");
 	}
 
 	private void initRegOp() {
 		registerOpcode.put(0, "$zero");
+		registerOpcode.put(1, "$at");
 		registerOpcode.put(2, "$v0");
 		registerOpcode.put(3, "$v1");
 		registerOpcode.put(4, "$a0");
@@ -54,18 +105,18 @@ public class Parser {
 		registerOpcode.put(23, "$s7");
 		registerOpcode.put(24, "$t8");
 		registerOpcode.put(25, "$t9");
+		registerOpcode.put(26, "$k0");
+		registerOpcode.put(27, "$k1");
 		registerOpcode.put(28, "$gp");
 		registerOpcode.put(29, "$fp");
 		registerOpcode.put(30, "$sp");
 		registerOpcode.put(31, "$ra");
-		
-		
-		
-		
+
 	}
 
 	private void initRegister() {
 		register.put("$zero", 0);
+		register.put("$at", 1);
 		register.put("$v1", 2);
 		register.put("$v2", 3);
 		register.put("$a0", 4);
@@ -84,17 +135,19 @@ public class Parser {
 		register.put("$s1", 17);
 		register.put("$s2", 18);
 		register.put("$s3", 19);
-		register.put("$s4", 20);		
+		register.put("$s4", 20);
 		register.put("$s5", 21);
 		register.put("$s6", 22);
 		register.put("$s7", 23);
 		register.put("$t8", 24);
 		register.put("$t9", 25);
+		register.put("$k0", 26);
+		register.put("$k1", 27);
 		register.put("$gp", 28);
 		register.put("$sp", 29);
 		register.put("$fp", 30);
 		register.put("$ra", 31);
-			
+
 	}
 
 	public HashMap<String, Integer> getRegister() {
@@ -113,5 +166,4 @@ public class Parser {
 		return instructionOpcode;
 	}
 
-	
 }
