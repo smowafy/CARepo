@@ -50,21 +50,6 @@ public class Parser {
 	}
 
 	private void initInstrOp() {
-		instruction.put("addi", 8);
-		instruction.put("lw", 35);
-		instruction.put("lb", 32);
-		instruction.put("lbu", 36);
-		instruction.put("sw", 43);
-		instruction.put("sb", 40);
-		instruction.put("beq", 4);
-		instruction.put("bne", 5);
-		instruction.put("j", 2);
-		instruction.put("jal", 3);
-		instruction.put("lui", 15);
-
-	}
-
-	private void initInstr() {
 		instructionOpcode.put(8, "addi");
 		instructionOpcode.put(35, "lw");
 		instructionOpcode.put(32, "lb");
@@ -76,6 +61,21 @@ public class Parser {
 		instructionOpcode.put(2, "j");
 		instructionOpcode.put(3, "jal");
 		instructionOpcode.put(15, "lui");
+
+	}
+
+	private void initInstr() {
+		instruction.put("addi", 8);
+		instruction.put("lw", 35);
+		instruction.put("lb", 32);
+		instruction.put("lbu", 36);
+		instruction.put("sw", 43);
+		instruction.put("sb", 40);
+		instruction.put("beq", 4);
+		instruction.put("bne", 5);
+		instruction.put("j", 2);
+		instruction.put("jal", 3);
+		instruction.put("lui", 15);
 	}
 
 	private void initRegOp() {
@@ -164,6 +164,14 @@ public class Parser {
 
 	public HashMap<Integer, String> getInstructionOpcode() {
 		return instructionOpcode;
+	}
+
+	public HashMap<String, Integer> getFunction() {
+		return function;
+	}
+
+	public HashMap<Integer, String> getFunctionOpcode() {
+		return functionOpcode;
 	}
 
 }
