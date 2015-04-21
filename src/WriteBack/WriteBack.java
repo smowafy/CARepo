@@ -1,20 +1,29 @@
 package WriteBack;
 
+import Components.MUX;
 import Components.BitsConverter;
+import Instructions.IFormat;
+import Instructions.Instruction;
+import Instructions.JFormat;
+import Instructions.RFormat;
+import Memory.RegisterFile;
 
 public class WriteBack {
-	Hashtable<Integer, Integer> registers;
+	/*current register file*/
+	RegisterFile registerFile;
 	BitsConverter converter;
+	MUX inputSrc;
+	int[] instruction;
 
-	public WriteBack() {
-		registers = new Hashtable<Integer, Integer>();
+	public WriteBack(RegisterFile regFile) {
+		registerFile = regFile;
 		converter = new BitsConverter();
+		inputSrc = new MUX();
 	}
 
-	public void writeToRegister(int[] register, int[] value) {
-		registerAddress = converter.BitsToInteger(register);
-		registerValue = converter.BitsToInteger(value);
-		registers.put(registerAddress, registerValue);
+	public int[] getInput(int[] memoryInput, 
+		int[] aluInput, boolean memToReg) {
+		return converter.IntegerToBits(inputSrc.select(aluInput,
+		 memoryInput, memToReg));
 	}
-
 }
