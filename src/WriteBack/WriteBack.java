@@ -2,10 +2,6 @@ package WriteBack;
 
 import Components.MUX;
 import Components.BitsConverter;
-import Instructions.IFormat;
-import Instructions.Instruction;
-import Instructions.JFormat;
-import Instructions.RFormat;
 import Memory.RegisterFile;
 
 public class WriteBack {
@@ -13,17 +9,29 @@ public class WriteBack {
 	RegisterFile registerFile;
 	BitsConverter converter;
 	MUX inputSrc;
-	int[] instruction;
+	int[] targetRegister;
+	int[] registerValue;
 
 	public WriteBack(RegisterFile regFile) {
 		registerFile = regFile;
 		converter = new BitsConverter();
 		inputSrc = new MUX();
 	}
-
+	/*select which line to get input from(memory or ALU)*/
 	public int[] getInput(int[] memoryInput, 
 		int[] aluInput, boolean memToReg) {
 		return converter.IntegerToBits(inputSrc.select(aluInput,
 		 memoryInput, memToReg));
+	}
+	/*could not find how register is taken from pipeline
+	 register so i assumed the register is passed directly*/
+	public void setTargetRegisterAndValue (int[] register,
+	 int[] value) {
+		targetRegister = register;
+		registerValue = value;
+	}
+	/*writes into register file*/
+	public void writeIntoRegister() {
+		RegisterFile.write(targetRegister, registerValue);
 	}
 }
