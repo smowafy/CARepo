@@ -6,37 +6,27 @@ import Components.MUX;
 import Memory.DataMemory;
 
 public class Executer {
-	DataMemory memory;
+	DataMemory memory;// given from the main class when new executer is initialised
 	BitsConverter converter;
 	Adder adder;
 	ShiftLeft addShift;
 	MUX mux;
 	Alu alu;
 	AluControl aluControl;
-	int[] components;
-	int[] aluOp;
-	int regDst;
-	int aluSrc;
-	int zero;
-	int[] incrementedPc;
+	int[] components;// supposing inputs from pipeline registers is there
+	int[] incrementedPc, value1, value2, signExtendedAdd, rd, rt; //pipeline register inputs
 	int[] branchAdd;
-	int[] rd;
-	int[] rt;
-	int[] value1;
-	int[] value2;
-	int[] signExtendedAdd;
 	int[] aluResult;
-	int[] aluSourceResult;
-	int[] registerDstResult;
-	int[] signExtendShiftResult;
-	int[] aluControlResult;
-	int[] aluControlInput;
-	int[] addeResult;
-	int regWrite;
-	int memToReg;
-	int branch;
-	int memWrite;
-	int memRead;
+	int[] aluSourceResult; // result from aluSrc mux
+	int[] registerDstResult; //result from regdst mux
+	int[] signExtendShiftResult; // result from shift left
+	int[] aluControlResult; // alu control bits
+	int[] aluControlInput; // 6-bits opcode input to alu control to output alu control bits
+	int[] aluOp;// Ex control signal from pipeline register
+	int regDst,aluSrc; //Ex control signals from pipeline register
+	int zero; // zero-bit
+	int regWrite,memToReg; //WB control signals
+	int branch, memWrite, memRead; //Mem control signals
 	
 	public Executer(DataMemory memory, int[] components){
 		this.memory = memory;
@@ -59,9 +49,8 @@ public class Executer {
 		aluSourceResult = new int[6];
 		registerDstResult = new int[5];
 		signExtendShiftResult = new int[32];
-		addeResult = new int[32];
-		aluControlResult = new int[6];
-		aluControlInput = new int[4];
+		aluControlInput = new int[6];
+		aluControlResult = new int[4];
 		initComponents();
 		
 	}
@@ -98,7 +87,7 @@ public class Executer {
 	}
 	
 	public void setBranchAddress(){
-		addeResult = adder.add(signExtendShiftResult, incrementedPc);
+		branchAdd = adder.add(signExtendShiftResult, incrementedPc);
 	}
 	public void callAlu(){
 		setAluOperation();
@@ -108,7 +97,7 @@ public class Executer {
 	}
 	public int[] EXMEMregister(){
 		int[] regComponents = new int[107];
-		System.arraycopy(addeResult, 0, regComponents, 0, 32);
+		System.arraycopy(branchAdd, 0, regComponents, 0, 32);
 		regComponents[32]= zero;
 		System.arraycopy(aluResult, 0, regComponents, 33, 32);
 		System.arraycopy(value2, 0, regComponents, 65, 32);
