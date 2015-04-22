@@ -1,6 +1,6 @@
 package Instructions;
 
-public class JFormat {
+public class JFormat extends Instruction {
 int[] opcode, address;
 	
 	public JFormat(int[] instruction) {

@@ -1,6 +1,6 @@
 package Instructions;
 
-public class IFormat {
+public class IFormat extends Instruction {
 int[] opcode, rs, rt, offset;
 	
 	public IFormat(int[] instruction) {
