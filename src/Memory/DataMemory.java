@@ -23,7 +23,8 @@ public class DataMemory {
 		int value = memory.get(addressInt);
 		return converter.IntegerToBits(value);
 	}
-	public int[] getFromMemory(int address) {
+	
+	public int[] getFromMemoryInt(int address){
 		int value = memory.get(address);
 		return converter.IntegerToBits(value);
 	}

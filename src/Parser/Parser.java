@@ -173,5 +173,8 @@ public class Parser {
 	public HashMap<Integer, String> getFunctionOpcode() {
 		return functionOpcode;
 	}
-
+public static void main(String[] args) {
+	Parser p = new Parser();
+	System.out.println(p.getRegisterOpcode().get(7));
+}
 }
