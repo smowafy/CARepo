@@ -20,8 +20,8 @@ public class WriteBack {
 	/*select which line to get input from(memory or ALU)*/
 	public int[] getInput(int[] memoryInput, 
 		int[] aluInput, boolean memToReg) {
-		return converter.IntegerToBits(inputSrc.select(aluInput,
-		 memoryInput, memToReg));
+		return inputSrc.select(aluInput,
+		 memoryInput, memToReg);
 	}
 	/*could not find how register is taken from pipeline
 	 register so i assumed the register is passed directly*/
@@ -32,6 +32,6 @@ public class WriteBack {
 	}
 	/*writes into register file*/
 	public void writeIntoRegister() {
-		RegisterFile.write(targetRegister, registerValue);
+		registerFile.insertIntoRegister(targetRegister, registerValue);
 	}
 }
