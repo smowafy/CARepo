@@ -40,6 +40,7 @@ public class Mips {
 		}
 		instrCode = new int[32];
 		instructionMemory.insertIntoMemory(instrCode, PC+i*4);
+		System.out.println("Fetching...");
 		new Fetcher();
 
 	}
@@ -150,6 +151,15 @@ public class Mips {
 		}
 		@SuppressWarnings("unused")
 		Mips m = new Mips(program, address);
-
+		
+		System.out.println("Register contents: ");
+		for(int i = 0; i < 32; i++) {
+			System.out.println("    "+m.converter.BitsToInteger(m.regFile.getFromRegister(i)));
+		}
+		System.out.println("Memory contents: ");
+		for(int i = 0; i < 32; i++) {
+			System.out.println("    "+m.converter.BitsToInteger(m.dataMemory.getFromMemory(i)));
+		}
+		
 	}
 }

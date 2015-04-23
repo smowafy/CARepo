@@ -30,7 +30,7 @@ public class DataMemory {
 		return converter.IntegerToBits(value);
 	}
 	public int[] getFromMemory(int address) {
-		int value = memory.get(address);
+		int value = (memory.get(address) == null)? 0: memory.get(address);
 		return converter.IntegerToBits(value);
 	}
 	

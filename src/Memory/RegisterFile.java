@@ -8,7 +8,7 @@ public class RegisterFile {
 	BitsConverter converter;
 
 	public RegisterFile() {
-		file = new int [31];
+		file = new int [32];
 		converter = new BitsConverter();
 	}
 	
