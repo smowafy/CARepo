@@ -18,6 +18,12 @@ public class DataMemory {
 		int inputInt = converter.BitsToInteger(input);
 		memory.put(addressInt, inputInt);
 	}
+	
+	public void insertIntoMemory(int[] input, int address) {
+		int inputInt = converter.BitsToInteger(input);
+		memory.put(address, inputInt);
+	}
+	
 	public int[] getFromMemory(int[] address) {
 		int addressInt = converter.BitsToInteger(address);
 		int value = memory.get(addressInt);
