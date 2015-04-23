@@ -1,5 +1,7 @@
 package WriteBack;
 
+import java.util.Arrays;
+
 import Components.MUX;
 import Components.BitsConverter;
 import Components.Register;
@@ -10,12 +12,11 @@ public class WriteBack {
 	RegisterFile registerFile;
 	BitsConverter converter;
 	MUX inputSrc;
+
 	/* number of clock cycles = 4 + wbCalls */
-	
 
 	public WriteBack(Register instruction) {
 		registerFile = Mips.Mips.regFile;
-		//registerFile = new RegisterFile();
 		converter = new BitsConverter();
 		inputSrc = new MUX();
 		writeBack(instruction.getRegister());
@@ -44,13 +45,39 @@ public class WriteBack {
 			for (int j = 31; j >= 0; j--, i--) {
 				registerValue[j] = instruction[i];
 			}
+			System.out.println("ID/EX Register Components in order:");
+			System.out.println("Register Value: "+Arrays.toString(registerValue));
+			System.out.println("Target Register: "+Arrays.toString(targetRegister));
+			System.out.println("Memory To Register: "+memToReg);
+			System.out.println("Register Write: "+regWrite);
+			if(converter.BitsToInteger(targetRegister) == 0) {
+				System.out.println("Cannot insert into $zero");
+				return;
+			}
 			/* write into register file */
 			registerFile.insertIntoRegister(registerValue, targetRegister);
 		}
+		else
+			System.out.println("Nothing to be written");
 
 	}
 
 	public static void main(String[] args) {
-		
-}
+		int[] p = new int[71];
+		p[70] = 1;
+		p[69] = 0;
+		p[64] = 1;
+		for(int i = 65; i < 69; i++) {
+			p[i] = 0;
+		}
+		for(int i = 32; i < 64; i++){
+			p[i] = 1;
+		}
+		for(int i = 0; i < 32; i++) {
+			p[i] = 0;
+		}
+		Register r = new Register(71);
+		r.insert(p);
+		new WriteBack(r);
+	}
 }
