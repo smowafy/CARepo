@@ -76,6 +76,15 @@ public class Parser {
 		instruction.put("j", 2);
 		instruction.put("jal", 3);
 		instruction.put("lui", 15);
+		instruction.put("add", 0);
+		instruction.put("sub", 0);
+		instruction.put("sll", 0);
+		instruction.put("srl", 0);
+		instruction.put("nor", 0);
+		instruction.put("slt", 0);
+		instruction.put("sltu", 0);
+		instruction.put("and", 0);
+		instruction.put("jr", 0);
 	}
 
 	private void initRegOp() {
