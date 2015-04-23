@@ -24,7 +24,8 @@ public class BitsConverter {
 
 	public int BitsToInteger(int[] inp) {
 		int out = 0;
-		for (int i = 31; i >= 0; i--) {
+		int size = inp.length;
+		for (int i = size - 1; i >= 0; i--) {
 			out += Math.pow(2, 31 - i) * inp[i];
 		}
 		return out;
