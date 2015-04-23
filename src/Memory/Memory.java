@@ -26,7 +26,7 @@ public class Memory {
 	public Memory(Register components) {
 		this.components = components.getRegister();
 		this.instructionMemory = Mips.Mips.instructionMemory;
-		this.data = Mips.Mips.DataMemory;
+		this.data = Mips.Mips.dataMemory;
 		converter = new BitsConverter();
 		this.memRead = memRead;
 		this.memWrite = memWrite;

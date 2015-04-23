@@ -19,7 +19,7 @@ public class Mips {
 	public static BitsConverter converter;
 	public static DataMemory dataMemory;
 	public static RegisterFile regFile;
-	public static wbCalls = 4;
+	public static int wbCalls = 4;
 	
 	public Mips(ArrayList<String> program, int startAddress) {
 		PC = startAddress;
@@ -28,16 +28,17 @@ public class Mips {
 		regFile = new RegisterFile();
 		parser = new Parser();
 		converter = new BitsConverter();
+		int[] instrCode;
 		int i = 0;
 		for (i = 0; i < program.size(); i++) {
 			String[] instr = program.get(i).split(" ");
-			int[] instrCode = getInstruction(instr);
+			instrCode = getInstruction(instr);
 			regFile = new RegisterFile(); // Missing method;
 			dataMemory = new DataMemory();
 			instructionMemory.insertIntoMemory(instrCode, PC+i*4);
 			
 		}
-		instrCode = new int [32];
+		instrCode = new int[32];
 		instructionMemory.insertIntoMemory(instrCode, PC+i*4);
 		new Fetcher();
 

@@ -20,17 +20,17 @@ public class Fetcher {
 		adder = new Adder();
 		converter = new BitsConverter();
 		//PC = counter;
-		dataMemory = mem;
-		regFile = reg;
-		fetchNext();
+		dataMemory = Mips.Mips.dataMemory;
+		regFile = Mips.Mips.regFile;
+		int check = fetchNext();
 		if(check != 0){
 		new Decoder(fetch);
-		new Fetch();
+		new Fetcher();
 		}
 	}
 	private int fetchNext() {
 			int [] instruction = instructionMemory.getFromMemory(Mips.Mips.PC);
-			int check = converter.IntegerToBits(instruction);
+			int check = converter.BitsToInteger(instruction);
 			if(check!=0){
 			int [] count = converter.IntegerToBits(Mips.Mips.PC, 32);
 			count = adder.inc(count);

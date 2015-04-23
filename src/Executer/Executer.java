@@ -1,6 +1,7 @@
 package Executer;
 import Components.BitsConverter;
 import Components.Adder;
+import Components.Register;
 import Components.ShiftLeft;
 import Components.MUX;
 import Memory.DataMemory;
@@ -128,7 +129,7 @@ public class Executer {
 	}
 	public static void main(String[] args) {
 		//DataMemory memo = new DataMemory();
-		BitsConverter conv = new BitsConverter();
+		/*BitsConverter conv = new BitsConverter();
 		int value1 = 6;
 		int value2 = 3;
 		int[] arr1 = conv.IntegerToBits(value1);
@@ -169,7 +170,7 @@ public class Executer {
 		System.out.println(result[104]);
 		System.out.println(result[105]);
 		System.out.println(result[106]);
-		System.out.println(result[107]);
+		System.out.println(result[107]);*/
 	}
 	
 
