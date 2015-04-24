@@ -167,7 +167,7 @@ public class Decoder {
 	 */
 
 	public int[] IDEXregister() {
-		int[][] components = new int [10][];
+		int[][] components = new int [11][];
 		components[0] = PC;
 		//PC
 		components[1] = converter.IntegerToBits(0);
@@ -219,6 +219,15 @@ public class Decoder {
 		if (currentInstruction instanceof RFormat) {
 			components[9] = ((RFormat)currentInstruction).getShamt();
 		}
+		int [] isShift = new int[1];
+		if (currentInstruction instanceof RFormat) {
+			RFormat tmp = ((RFormat)currentInstruction);
+			if (converter.BitsToInteger(tmp.getOpCode(), 6) == 0 && 
+				converter.BitsToInteger(tmp.getFn(), 6) == 0) {
+					isShift[0] = 1;
+			}
+		}
+		components[10] = isShift;
 		return combineArrays(components);
 		//The combineArrays method just concatenates all the arrays into a single array
 	}
