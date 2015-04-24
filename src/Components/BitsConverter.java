@@ -22,7 +22,7 @@ public class BitsConverter {
 		}
 		return result;
 	}
-	public int BitsToInteger(int[] inp) {
+	public int BitsToIntegerSigned(int[] inp) {
 		int out = 0;
 		boolean neg = false;
 		if(inp[0] == 1)
@@ -32,7 +32,7 @@ public class BitsConverter {
 			{
 				inp[i] = inp[i]^1;
 			}
-			int x = this.BitsToIntegerHelper(inp);
+			int x = this.BitsToInteger(inp);
 			inp = this.IntegerToBits(++x);
 		}
 		for(int i = inp.length -1; i>= 0; i--) {
@@ -41,7 +41,7 @@ public class BitsConverter {
 		return neg?(-1)*out:out;
 	}
 	
-	public int BitsToIntegerHelper(int[] inp) {
+	public int BitsToInteger(int[] inp) {
 		int out = 0;
 		for (int i = inp.length-1; i >= 0; i--) {
 			out += Math.pow(2, inp.length-1 - i) * inp[i];
