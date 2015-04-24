@@ -28,12 +28,12 @@ public class AluControl {
 				result = converter.IntegerToBits(op);
 			}
 			else{
-				if(aluOp[0]==0 && aluOp[1]==1){//beq
+				if(aluOp[0]==0 && aluOp[1]==1){//beq - bne
 					op = 6;
 					result = converter.IntegerToBits(op);
 				}
-				else{ //bne
-					op = 20; // any number chosen for bne is ok since its not handled in execute
+				else{ 
+					op = 25; // any number chosen 
 				}
 			}
 		}

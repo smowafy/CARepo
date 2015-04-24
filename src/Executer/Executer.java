@@ -1,10 +1,11 @@
 package Executer;
 import Components.BitsConverter;
+import Components.Register;
 import Components.Adder;
 import Components.Register;
 import Components.ShiftLeft;
 import Components.MUX;
-import Memory.DataMemory;
+import Memory.Memory;;
 
 public class Executer {
 	//DataMemory memory;// given from the main class when new executer is initialised
@@ -35,7 +36,7 @@ public class Executer {
 	
 	public Executer(Register components){
 		//this.memory = memory;
-		this.components = components.getRegister();
+		this.components = components.getRegister();;
 		converter = new BitsConverter();
 		adder = new Adder();
 		addShift = new ShiftLeft();
@@ -106,7 +107,8 @@ public class Executer {
 		beqZero = alu.zero(value1, aluSourceResult);
 		bneZero = 1-beqZero;
 	}
-	public int[] EXMEMregister(){
+	public Register EXMEMregister(){
+		Register exmem = new Register(108);
 		int[] regComponents = new int[108];
 		System.arraycopy(branchAdd, 0, regComponents, 0, 32);
 		regComponents[32]= beqZero;
@@ -119,26 +121,28 @@ public class Executer {
 		regComponents[105] = branch;
 		regComponents[106] = memRead;
 		regComponents[107] = memWrite;
-		return regComponents;
+		exmem.insert(regComponents);
+		return exmem;
 	}
-	public int[] runExecuter(){
+	public void runExecuter(){
 		callAlu();
 		setDestinationReg();
 		setBranchAddress();
-		return EXMEMregister();
+		new Memory(EXMEMregister());
+		 
 	}
 	public static void main(String[] args) {
-		//DataMemory memo = new DataMemory();
-		/*BitsConverter conv = new BitsConverter();
+		/*
+		BitsConverter conv = new BitsConverter();
 		int value1 = 6;
 		int value2 = 3;
 		int[] arr1 = conv.IntegerToBits(value1);
 		int[] arr2 = conv.IntegerToBits(value2);
-		int[] components = new int[147];
+		int[] components = new int[153];
 		System.arraycopy(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},0,components, 0,  32);
 		System.arraycopy( arr1, 0,components, 32, 32);
 		System.arraycopy( arr2, 0,components, 64, 32);
-		System.arraycopy(new int[]{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},0,components, 96,32);
+		System.arraycopy(new int[]{0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},0,components, 96,32);
 		System.arraycopy(new int[]{0,0,1,0,0},0,components, 128,  5);
 		System.arraycopy(new int[]{0,0,1,0,1},0,components, 133, 5);
 		components[138] = 0; // memToReg
@@ -148,7 +152,17 @@ public class Executer {
 		components[142] = 0; // memWrite
 		components[143] = 1; //regDst
 		components[144] = 0; //aluSrc
-		Executer ex = new Executer(components);
+		components[145] = 1;
+		components[146] = 0;
+		components[147] = 0;
+		components[148] = 0;
+		components[149] = 0;
+		components[150] = 0;
+		components[151] = 1;
+		components[152] = 1;
+		Register input = new Register(153);
+		input.insert(components);
+		Executer ex = new Executer(input);
 		int[] result = ex.runExecuter();
 		for (int i = 0; i < 32; i++) {
 			System.out.print(result[i]+" ");
@@ -170,7 +184,8 @@ public class Executer {
 		System.out.println(result[104]);
 		System.out.println(result[105]);
 		System.out.println(result[106]);
-		System.out.println(result[107]);*/
+		System.out.println(result[107]);
+		*/
 	}
 	
 
