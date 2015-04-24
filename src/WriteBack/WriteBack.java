@@ -11,11 +11,10 @@ public class WriteBack {
 	BitsConverter converter;
 	MUX inputSrc;
 	/* number of clock cycles = 4 + wbCalls */
-	public static int wbCalls;
 	
 
-	public WriteBack(RegisterFile regFile, Register instruction) {
-		registerFile = regFile;
+	public WriteBack(Register instruction) {
+		registerFile = Mips.Mips.regFile;
 		converter = new BitsConverter();
 		inputSrc = new MUX();
 		writeBack(instruction.getRegister());
@@ -23,7 +22,7 @@ public class WriteBack {
 
 	/* takes pipeline register contents as input */
 	public void writeBack(int[] instruction) {
-		wbCalls++;
+		Mips.Mips.wbCalls++;
 		int i = 68;
 		/*
 		 * reg[0] = regWrite, reg[1] = memToReg, reg[2 ~ 6] = register, reg[7 ~
