@@ -1,13 +1,11 @@
 package Executer;
 import Components.BitsConverter;
-import Memory.DataMemory;
 
 public class Alu {
-	DataMemory memory;
+	//DataMemory memory;
 	BitsConverter conv;
 	
-	public Alu(DataMemory memory){
-		this.memory = memory;
+	public Alu(){
 		conv = new BitsConverter();
 	}
 	public int zero(int[] value1, int[]value2){

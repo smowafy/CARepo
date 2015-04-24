@@ -14,11 +14,12 @@ import Parser.Parser;
 
 public class Mips {
 	public static int PC;
-	DataMemory instructionMemory;
-	Parser parser;
-	BitsConverter converter;
-	DataMemory dataMemory;
-	RegisterFile regFile;
+	public static DataMemory instructionMemory;
+	public static Parser parser;
+	public static BitsConverter converter;
+	public static DataMemory dataMemory;
+	public static RegisterFile regFile;
+	
 	public Mips(ArrayList<String> program, int startAddress) {
 		PC = startAddress;
 		instructionMemory = new DataMemory();

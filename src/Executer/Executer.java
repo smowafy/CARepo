@@ -6,7 +6,7 @@ import Components.MUX;
 import Memory.DataMemory;
 
 public class Executer {
-	DataMemory memory;// given from the main class when new executer is initialised
+	//DataMemory memory;// given from the main class when new executer is initialised
 	BitsConverter converter;
 	Adder adder;
 	ShiftLeft addShift;
@@ -17,7 +17,8 @@ public class Executer {
 	int[] incrementedPc, value1, value2, signExtendedAdd, rd, rt; //pipeline register inputs
 	int[] branchAdd;
 	int[] aluResult;
-	int[] aluSourceResult; // result from aluSrc mux
+	int[] aluSourceResult1; // result from aluSrc mux
+	int[] aluSourceResult;
 	int[] registerDstResult; //result from regdst mux
 	int[] signExtendShiftResult; // result from shift left
 	int[] aluControlResult; // alu control bits
@@ -28,15 +29,17 @@ public class Executer {
 	int bneZero; // zero-bit for bne
 	int regWrite,memToReg; //WB control signals
 	int branch, memWrite, memRead; //Mem control signals
+	int shift; // 1 when the operation is shift
+	int[] shamt; // shift amount
 	
-	public Executer(DataMemory memory, int[] components){
-		this.memory = memory;
+	public Executer(int[] components){
+		//this.memory = memory;
 		this.components = components;
 		converter = new BitsConverter();
 		adder = new Adder();
 		addShift = new ShiftLeft();
 		mux = new MUX();
-		alu = new Alu(this.memory);
+		alu = new Alu();
 		aluControl = new AluControl();
 		aluOp = new int[2];
 		incrementedPc = new int[32];
@@ -48,6 +51,8 @@ public class Executer {
 		signExtendedAdd = new int[32];
 		aluResult = new int[32];
 		aluSourceResult = new int[6];
+		aluSourceResult1 = new int[6];
+		shamt = new int[6];
 		registerDstResult = new int[5];
 		signExtendShiftResult = new int[32];
 		aluControlInput = new int[6];
@@ -71,6 +76,8 @@ public class Executer {
 		regDst = components[143];
 		aluSrc = components[144];
 		System.arraycopy(components, 145, aluOp, 0, 2);
+		System.arraycopy(components, 147, shamt, 1, 5);
+		shift = components[152];
 	}
 	
 	public void setAluOperation(){
@@ -81,7 +88,8 @@ public class Executer {
 		registerDstResult = mux.select2(rt, rd, regDst);
 	}
 	public void setAluSourceResult(){
-		aluSourceResult = mux.select2(value2, signExtendedAdd, aluSrc);
+		aluSourceResult1 = mux.select2(value2, signExtendedAdd, aluSrc);
+		aluSourceResult = mux.select2(aluSourceResult1, shamt, shift);
 	}
 	public void setShiftedAddress(){
 		signExtendShiftResult = addShift.shift(signExtendedAdd);
@@ -119,7 +127,7 @@ public class Executer {
 		return EXMEMregister();
 	}
 	public static void main(String[] args) {
-		DataMemory memo = new DataMemory();
+		//DataMemory memo = new DataMemory();
 		BitsConverter conv = new BitsConverter();
 		int value1 = 6;
 		int value2 = 3;
@@ -139,7 +147,7 @@ public class Executer {
 		components[142] = 0; // memWrite
 		components[143] = 1; //regDst
 		components[144] = 0; //aluSrc
-		Executer ex = new Executer(memo, components);
+		Executer ex = new Executer(components);
 		int[] result = ex.runExecuter();
 		for (int i = 0; i < 32; i++) {
 			System.out.print(result[i]+" ");
