@@ -18,12 +18,12 @@ public class Decoder {
 	RegisterFile regFile;
 	SignExtend extender;
 
-	public Decoder(Register IFIDreg, RegisterFile curr) {
+	public Decoder(Register IFIDreg) {
 		converter = new BitsConverter();
 		int[] IFID = IFIDreg.getRegister();
 		PC = converter.IntegerToBits(Mips.Mips.PC);
 		extender = new SignExtend();
-		regFile = curr;
+		regFile = Mips.Mips.regFile;
 		int[] instructionPart = new int[32];
 		System.arraycopy(IFID, 0, instructionPart, 0, 32);
 		setInstruction(instructionPart);
