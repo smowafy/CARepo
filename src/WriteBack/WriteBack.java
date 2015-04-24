@@ -11,7 +11,7 @@ public class WriteBack {
 	BitsConverter converter;
 	MUX inputSrc;
 	/* number of clock cycles = 4 + wbCalls */
-	static int wbCalls;
+	public static int wbCalls;
 	
 
 	public WriteBack(RegisterFile regFile, Register instruction) {
