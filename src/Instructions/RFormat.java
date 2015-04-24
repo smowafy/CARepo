@@ -2,7 +2,7 @@ package Instructions;
 
 import java.util.Arrays;
 
-public class RFormat {
+public class RFormat extends Instruction{
 	int[] opcode, rs, rt, rd, shamt, fn;
 	
 	public RFormat(int[] instruction) {

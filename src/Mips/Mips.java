@@ -7,15 +7,18 @@ import java.util.ArrayList;
 
 
 import Components.BitsConverter;
+import Fetcher.Fetcher;
 import Memory.DataMemory;
+import Memory.RegisterFile;
 import Parser.Parser;
 
 public class Mips {
-	int PC;
+	public static int PC;
 	DataMemory instructionMemory;
 	Parser parser;
 	BitsConverter converter;
-
+	DataMemory dataMemory;
+	RegisterFile regFile;
 	public Mips(ArrayList<String> program, int startAddress) {
 		PC = startAddress;
 		instructionMemory = new DataMemory();
@@ -24,16 +27,10 @@ public class Mips {
 		for (int i = 0; i < program.size(); i++) {
 			String[] instr = program.get(i).split(" ");
 			int[] instrCode = getInstruction(instr);
-			/*for (int j = 0; j < instrCode.length; j++) {
-				System.out.print(instrCode[j]);
-			}*/
-			//System.out.println();
+			regFile = new RegisterFile(); // Missing method;
+			dataMemory = new DataMemory();
 			instructionMemory.insertIntoMemory(instrCode, PC+i*4);
-			/*System.out.print((PC+i*4) + " ");
-			int [] c = instructionMemory.getFromMemory(PC+i*4);
-			for (int j = 0; j < c.length; j++) {
-				System.out.print(c[j]);
-			}*/
+			new Fetcher(regFile, instructionMemory, dataMemory);
 		}
 
 	}

@@ -15,14 +15,26 @@ public class BitsConverter {
 	
 	public int[] IntegerToBits(int inp) {
 		int[] result = new int[32];
-		for(int i = 0; i < 32; i++) {
+		for (int i = 0; i < 32; i++) {
 			int bit = (inp & (1 << i));
-			if (bit > 0) result[32 - 1 - i] = 1;
-			else result[32 - 1 - i] = 0;
+			if (bit > 0)
+				result[32 - 1 - i] = 1;
+			else
+				result[32 - 1 - i] = 0;
 		}
 		return result;
 	}
-	public int BitsToInteger(int[] inp) {
+
+	public int BitsToInterger(int[] inp, int size) {
+		int out = 0;
+		for (int i = size - 1; i >= 0; i--) {
+			out += Math.pow(2, size - 1 - i) * inp[i];
+		}
+		return out;
+
+	}
+
+	public int BitsToIntegerSigned(int[] inp) {
 		int out = 0;
 		boolean neg = false;
 		if(inp[0] == 1)
@@ -32,7 +44,7 @@ public class BitsConverter {
 			{
 				inp[i] = inp[i]^1;
 			}
-			int x = this.BitsToIntegerHelper(inp);
+			int x = this.BitsToInteger(inp);
 			inp = this.IntegerToBits(++x);
 		}
 		for(int i = inp.length -1; i>= 0; i--) {
@@ -41,14 +53,14 @@ public class BitsConverter {
 		return neg?(-1)*out:out;
 	}
 	
-	public int BitsToIntegerHelper(int[] inp) {
+	public int BitsToInteger(int[] inp) {
 		int out = 0;
 		for (int i = inp.length-1; i >= 0; i--) {
 			out += Math.pow(2, inp.length-1 - i) * inp[i];
 		}
 		return out;
 	}
-	
+
 	public static void main(String[] args) {
 		BitsConverter x = new BitsConverter();
 		int[] arr = new int[32];
@@ -58,7 +70,8 @@ public class BitsConverter {
 		System.out.println(x.BitsToInteger(arr));
 		int a = -6;
 		arr = x.IntegerToBits(a);
-		for(int i = 31; i > 20; i--) {
+
+		for (int i = 31; i > 26; i--) {
 			System.out.print(arr[i]);
 		}
 		System.out.println();

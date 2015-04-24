@@ -14,5 +14,8 @@ public class Register {
 		}
 		pointer  = (pointer+input.length)%bits.length;
 	}
-	
+	public int [] getRegister()
+	{
+		return bits;
+	}
 }
