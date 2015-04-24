@@ -1,7 +1,6 @@
 package Decoder;
 
 import java.util.Arrays;
-
 import Components.BitsConverter;
 import Components.Register;
 import Components.SignExtend;
@@ -20,9 +19,9 @@ public class Decoder {
 	SignExtend extender;
 
 	public Decoder(Register IFIDreg, RegisterFile curr) {
-		int[] IFID = IFIDreg.getRegister();
-		PC = Mips.Mips.PC;
 		converter = new BitsConverter();
+		int[] IFID = IFIDreg.getRegister();
+		PC = converter.IntegerToBits(Mips.Mips.PC);
 		extender = new SignExtend();
 		regFile = curr;
 		int[] instructionPart = new int[32];
@@ -222,8 +221,8 @@ public class Decoder {
 		int [] isShift = new int[1];
 		if (currentInstruction instanceof RFormat) {
 			RFormat tmp = ((RFormat)currentInstruction);
-			if (converter.BitsToInteger(tmp.getOpCode(), 6) == 0 && 
-				converter.BitsToInteger(tmp.getFn(), 6) == 0) {
+			if (converter.BitsToInterger(tmp.getOpcode(), 6) == 0 && 
+				converter.BitsToInterger(tmp.getFn(), 6) == 0) {
 					isShift[0] = 1;
 			}
 		}
