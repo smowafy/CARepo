@@ -19,10 +19,13 @@ public class Mips {
 	public static BitsConverter converter;
 	public static DataMemory dataMemory;
 	public static RegisterFile regFile;
+	public static wbCalls = 4;
 	
 	public Mips(ArrayList<String> program, int startAddress) {
 		PC = startAddress;
 		instructionMemory = new DataMemory();
+		dataMemory = new DataMemory();
+		regFile = new RegisterFile();
 		parser = new Parser();
 		converter = new BitsConverter();
 		for (int i = 0; i < program.size(); i++) {
@@ -31,7 +34,7 @@ public class Mips {
 			regFile = new RegisterFile(); // Missing method;
 			dataMemory = new DataMemory();
 			instructionMemory.insertIntoMemory(instrCode, PC+i*4);
-			new Fetcher(regFile, instructionMemory, dataMemory);
+			new Fetcher();
 		}
 
 	}
