@@ -32,9 +32,9 @@ public class Executer {
 	int shift; // 1 when the operation is shift
 	int[] shamt; // shift amount
 	
-	public Executer(int[] components){
+	public Executer(Register components){
 		//this.memory = memory;
-		this.components = components;
+		this.components = components.getRegister();
 		converter = new BitsConverter();
 		adder = new Adder();
 		addShift = new ShiftLeft();
