@@ -1,5 +1,7 @@
 package Decoder;
 
+import java.util.Arrays;
+
 import Components.BitsConverter;
 import Components.Register;
 import Components.SignExtend;
@@ -7,25 +9,28 @@ import Instructions.IFormat;
 import Instructions.Instruction;
 import Instructions.JFormat;
 import Instructions.RFormat;
-import Memory.DataMemory;
 import Memory.RegisterFile;
 
 public class Decoder {
+
 	Instruction currentInstruction;
 	int[] PC;
 	BitsConverter converter;
 	RegisterFile regFile;
 	SignExtend extender;
-	Register components;
-	DataMemory dataMemory;
-	public Decoder(RegisterFile curr, Register comp, DataMemory datamem) {
+
+	public Decoder(Register IFIDreg, RegisterFile curr) {
+		int[] IFID = IFIDreg.getRegister();
+		PC = Mips.Mips.PC;
 		converter = new BitsConverter();
 		extender = new SignExtend();
 		regFile = curr;
-		components = comp; // added pipelined Register
-		dataMemory = datamem; // added DataMemory;
+		int[] instructionPart = new int[32];
+		System.arraycopy(IFID, 0, instructionPart, 0, 32);
+		setInstruction(instructionPart);
+		
 	}
-	
+
 	public void setInstruction(int[] arr) {
 
 		int opcode = converter.BitsToInterger(arr, 6);
@@ -153,6 +158,7 @@ public class Decoder {
 		2-bits WB control signals
 		3-bits MEM control signals
 		4-bits EX control signals
+		5-bits Shift amount
 		
 	 * 
 	 * 
@@ -161,7 +167,7 @@ public class Decoder {
 	 */
 
 	public int[] IDEXregister() {
-		int[][] components = new int [9][];
+		int[][] components = new int [10][];
 		components[0] = PC;
 		//PC
 		components[1] = converter.IntegerToBits(0);
@@ -210,6 +216,9 @@ public class Decoder {
 		EXSignals[3] = this.getALUOp()[1];
 		components[8] = EXSignals;
 		//load Execute signals in this order: RegDst, ALUSrc, 2 bits of ALUOp
+		if (currentInstruction instanceof RFormat) {
+			components[9] = ((RFormat)currentInstruction).getShamt();
+		}
 		return combineArrays(components);
 		//The combineArrays method just concatenates all the arrays into a single array
 	}
@@ -230,12 +239,14 @@ public class Decoder {
 	 */
 	public static int[] combineArrays(int[][] arrays) {
 		int len = 0;
+		int acc = 0;
 		for (int i = 0; i < arrays.length; i++) {
 			len += arrays[i].length;
 		}
 		int[] result = new int[len];
 		for (int i = 0; i < arrays.length; i++) {
-			System.arraycopy(arrays[i], 0, result, 0, arrays[i].length);
+			System.arraycopy(arrays[i], 0, result, acc, arrays[i].length);
+			acc += arrays[i].length;
 		}
 		return result;
 	}
@@ -245,6 +256,14 @@ public class Decoder {
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
         return result;
+	}
+	
+	public static void main(String[] args) {
+		/*RegisterFile reg = new RegisterFile();
+		int[] IFID = new int[32];
+		Decoder dec = new Decoder(IFID, reg);
+		int[] finalReg = dec.IDEXregister();
+		System.out.println(Arrays.toString(finalReg));*/
 	}
 
 }
