@@ -28,14 +28,18 @@ public class Mips {
 		regFile = new RegisterFile();
 		parser = new Parser();
 		converter = new BitsConverter();
-		for (int i = 0; i < program.size(); i++) {
+		int i = 0;
+		for (i = 0; i < program.size(); i++) {
 			String[] instr = program.get(i).split(" ");
 			int[] instrCode = getInstruction(instr);
 			regFile = new RegisterFile(); // Missing method;
 			dataMemory = new DataMemory();
 			instructionMemory.insertIntoMemory(instrCode, PC+i*4);
-			new Fetcher();
+			
 		}
+		instrCode = new int [32];
+		instructionMemory.insertIntoMemory(instrCode, PC+i*4);
+		new Fetcher();
 
 	}
 
