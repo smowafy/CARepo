@@ -13,18 +13,17 @@ public class AluControl {
 		}
 		else{
 			if(aluOp[0]==1 && aluOp[1]==0){//R-Type
-				int input = converter.BitsToInterger(aluControlInput, 6);
+				int input = converter.BitsToInteger(aluControlInput);
 				switch(input){
 				case 32: op = 2; break;
 				case 34: op = 6; break;
 				case 39: op = 12; break;
 				case 42: op = 7; break;
 				case 36: op = 0; break;
-				default: op = 0; //temporarily
-				//case 41: op= ?? sltu
-				//case 8: op=?? jr
-				//case 0: op=?? sll
-				//case 2: op=?? srl
+				case 41: op = 5; break; // 5 chosen as control bits for sltu
+				case 0: op = 1; break; // 1 chosen as control bits for sll
+				case 2: op = 3; break; // 3 chosen as control bits for srl
+				default: op = 25; // input for jr which is not handled so any number chosen is ok
 				}
 				result = converter.IntegerToBits(op);
 			}
@@ -32,6 +31,9 @@ public class AluControl {
 				if(aluOp[0]==0 && aluOp[1]==1){//beq
 					op = 6;
 					result = converter.IntegerToBits(op);
+				}
+				else{ //bne
+					op = 20; // any number chosen for bne is ok since its not handled in execute
 				}
 			}
 		}

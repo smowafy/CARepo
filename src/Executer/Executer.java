@@ -24,7 +24,8 @@ public class Executer {
 	int[] aluControlInput; // 6-bits opcode input to alu control to output alu control bits
 	int[] aluOp;// Ex control signal from pipeline register
 	int regDst,aluSrc; //Ex control signals from pipeline register
-	int zero; // zero-bit
+	int beqZero; // zero-bit for beq
+	int bneZero; // zero-bit for bne
 	int regWrite,memToReg; //WB control signals
 	int branch, memWrite, memRead; //Mem control signals
 	
@@ -69,7 +70,7 @@ public class Executer {
 		memWrite = components[142];
 		regDst = components[143];
 		aluSrc = components[144];
-		System.arraycopy(converter, 145, aluOp, 0, 2);
+		System.arraycopy(components, 145, aluOp, 0, 2);
 	}
 	
 	public void setAluOperation(){
@@ -93,20 +94,22 @@ public class Executer {
 		setAluOperation();
 		setAluSourceResult();
 		aluResult = alu.doOperation(value1, aluSourceResult, aluControlResult);
-		zero = alu.zero(value1, aluSourceResult);
+		beqZero = alu.zero(value1, aluSourceResult);
+		bneZero = 1-beqZero;
 	}
 	public int[] EXMEMregister(){
-		int[] regComponents = new int[107];
+		int[] regComponents = new int[108];
 		System.arraycopy(branchAdd, 0, regComponents, 0, 32);
-		regComponents[32]= zero;
-		System.arraycopy(aluResult, 0, regComponents, 33, 32);
-		System.arraycopy(value2, 0, regComponents, 65, 32);
-		System.arraycopy(registerDstResult, 0, regComponents, 97, 5);
-		regComponents[102] = memToReg;
-		regComponents[103] = regWrite;
-		regComponents[104] = branch;
-		regComponents[105] = memRead;
-		regComponents[106] = memWrite;
+		regComponents[32]= beqZero;
+		regComponents[33]= bneZero;
+		System.arraycopy(aluResult, 0, regComponents, 34, 32);
+		System.arraycopy(value2, 0, regComponents, 66, 32);
+		System.arraycopy(registerDstResult, 0, regComponents, 98, 5);
+		regComponents[103] = memToReg;
+		regComponents[104] = regWrite;
+		regComponents[105] = branch;
+		regComponents[106] = memRead;
+		regComponents[107] = memWrite;
 		return regComponents;
 	}
 	public int[] runExecuter(){
@@ -114,6 +117,51 @@ public class Executer {
 		setDestinationReg();
 		setBranchAddress();
 		return EXMEMregister();
+	}
+	public static void main(String[] args) {
+		DataMemory memo = new DataMemory();
+		BitsConverter conv = new BitsConverter();
+		int value1 = 6;
+		int value2 = 3;
+		int[] arr1 = conv.IntegerToBits(value1);
+		int[] arr2 = conv.IntegerToBits(value2);
+		int[] components = new int[147];
+		System.arraycopy(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},0,components, 0,  32);
+		System.arraycopy( arr1, 0,components, 32, 32);
+		System.arraycopy( arr2, 0,components, 64, 32);
+		System.arraycopy(new int[]{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},0,components, 96,32);
+		System.arraycopy(new int[]{0,0,1,0,0},0,components, 128,  5);
+		System.arraycopy(new int[]{0,0,1,0,1},0,components, 133, 5);
+		components[138] = 0; // memToReg
+		components[139] = 1; //regWrite
+		components[140] = 0; // branch
+		components[141] = 0; // memRead
+		components[142] = 0; // memWrite
+		components[143] = 1; //regDst
+		components[144] = 0; //aluSrc
+		Executer ex = new Executer(memo, components);
+		int[] result = ex.runExecuter();
+		for (int i = 0; i < 32; i++) {
+			System.out.print(result[i]+" ");
+		}
+		System.out.println();
+		for (int i = 34; i < 66; i++) {
+			System.out.print(result[i]+" ");
+		}
+		System.out.println();
+		for (int i = 66; i < 98; i++) {
+			System.out.print(result[i]+" ");
+		}
+		System.out.println();
+		for (int i = 98; i < 103; i++) {
+			System.out.print(result[i]+" ");
+		}
+		System.out.println();
+		System.out.println(result[103]);
+		System.out.println(result[104]);
+		System.out.println(result[105]);
+		System.out.println(result[106]);
+		System.out.println(result[107]);
 	}
 	
 
