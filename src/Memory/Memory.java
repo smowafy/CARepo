@@ -23,11 +23,10 @@ public class Memory {
 	int regWrite;
 	int[] readData; // 32 if load
 
-	public Memory(RegisterFile regFile, Register components, DataMemory data,
-			DataMemory instructionMemory) {
+	public Memory(Register components) {
 		this.components = components.getRegister();
-		this.instructionMemory = instructionMemory;
-		this.data = data;
+		this.instructionMemory = Mips.Mips.instructionMemory;
+		this.data = Mips.Mips.DataMemory;
 		converter = new BitsConverter();
 		this.memRead = memRead;
 		this.memWrite = memWrite;
@@ -51,7 +50,7 @@ public class Memory {
 						converter.BitsToInteger(branchAdd), select);
 			}
 		}
-		new WriteBack(regFile, WBregister());
+		new WriteBack(WBregister());
 
 	}
 
