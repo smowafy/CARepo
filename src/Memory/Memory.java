@@ -77,7 +77,7 @@ public class Memory {
 				storeByte(aluResult, value2);
 			}
 		}
-		//new WriteBack(WBregister());
+		new WriteBack(WBregister());
 
 	}
 
@@ -125,7 +125,7 @@ public class Memory {
 	}
 
 	public Register WBregister() {
-		int[] regComponents = new int[71];
+		int[] regComponents = new int[74];
 		System.arraycopy(aluResult, 0, regComponents, 0, 32);
 		System.arraycopy(loadResult, 0, regComponents, 32, 32);
 		System.arraycopy(regDes, 0, regComponents, 64, 5);

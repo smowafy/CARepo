@@ -50,7 +50,6 @@ public class Fetcher {
 			int op = converter.BitsToInteger(opcode);
 			if (op != 0) {
 				opc = parser.getInstructionOpcode().get(op);}
-			
 				if (opc.equals("j")) {
 					int[] jump = new int[26];
 					for (int i = 6; i < 32; i++) {
