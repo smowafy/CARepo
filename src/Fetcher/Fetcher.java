@@ -1,5 +1,7 @@
 package Fetcher;
 
+import java.util.Arrays;
+
 import Components.Adder;
 import Components.BitsConverter;
 import Components.Register;
@@ -29,8 +31,10 @@ public class Fetcher {
 		int check = fetchNext();
 		if (check != 0) {
 			new Decoder(fetch);
+			//System.out.println(Arrays.toString(fetch.getRegister()));
 			new Fetcher();
 		}
+		
 	}
 
 	private int fetchNext() {
@@ -38,37 +42,43 @@ public class Fetcher {
 		int check = converter.BitsToInteger(instruction);
 		int[] opcode = new int[6];
 		int[] count = new int[32];
+		String opc = "";
 		if (check != 0) {
 			for (int i = 0; i < 6; i++) {
 				opcode[i] = instruction[i];
 			}
 			int op = converter.BitsToInteger(opcode);
-			String opc = parser.getInstructionOpcode().get(op);
-			if (opc.equals("j")) {
-				int[] jump = new int[26];
-				for (int i = 6; i < 32; i++) {
-					jump[i - 6] = instruction[i];
+			if (op != 0) {
+				opc = parser.getInstructionOpcode().get(op);}
+			
+				if (opc.equals("j")) {
+					int[] jump = new int[26];
+					for (int i = 6; i < 32; i++) {
+						jump[i - 6] = instruction[i];
+					}
+					int j = converter.BitsToInteger(jump);
+					Mips.Mips.PC = j*4;
+					count = converter.IntegerToBits(Mips.Mips.PC, 32);
+				} else if (opc.equals("jr")) {
+					int[] adr = Mips.Mips.regFile.getFromRegister(parser
+							.getRegister().get("$ra"));
+					count = adr;
+					Mips.Mips.PC = converter.BitsToInteger(adr);
+				} else if (opc.equals("jal")) {
+					int[] jump = new int[26];
+					for (int i = 6; i < 32; i++) {
+						jump[i - 6] = instruction[i];
+					}
+					int[] incPC = converter.IntegerToBits(Mips.Mips.PC, 32);
+					incPC = adder.inc(incPC);
+					Mips.Mips.regFile.insertIntoRegister(
+							incPC,
+							converter.IntegerToBits(parser.getRegister().get(
+									"$ra")));
+					Mips.Mips.PC = converter.BitsToInteger(jump)*4;
+					count = converter.IntegerToBits(Mips.Mips.PC, 32);
 				}
-				int j = converter.BitsToInteger(jump);
-				Mips.Mips.PC = j;
-				count = converter.IntegerToBits(j, 32);
-			} else if (opc.equals("jr")) {
-				int[] adr = Mips.Mips.regFile.getFromRegister(parser
-						.getRegister().get("$ra"));
-				count = adr;
-				Mips.Mips.PC = converter.BitsToInteger(adr);
-			} else if (opc.equals("jal")) {
-				int[] jump = new int[26];
-				for (int i = 6; i < 32; i++) {
-					jump[i - 6] = instruction[i];
-				}
-				int[] incPC = converter.IntegerToBits(Mips.Mips.PC, 32);
-				incPC = adder.inc(incPC);
-				Mips.Mips.regFile.insertIntoRegister(incPC, converter
-						.IntegerToBits(parser.getRegister().get("$ra")));
-				Mips.Mips.PC = converter.BitsToInteger(jump);
-				count = converter.IntegerToBits(Mips.Mips.PC, 32);
-			} else {
+			 else {
 				count = converter.IntegerToBits(Mips.Mips.PC, 32);
 				count = adder.inc(count);
 				Mips.Mips.PC = converter.BitsToInteger(count);
