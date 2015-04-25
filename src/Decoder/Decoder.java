@@ -22,11 +22,12 @@ public class Decoder {
 	public Decoder(Register IFIDreg) {
 		converter = new BitsConverter();
 		int[] IFID = IFIDreg.getRegister();
-		PC = converter.IntegerToBits(Mips.Mips.PC);
+		PC = new int[32];
 		extender = new SignExtend();
 		regFile = Mips.Mips.regFile;
 		int[] instructionPart = new int[32];
 		System.arraycopy(IFID, 0, instructionPart, 0, 32);
+		System.arraycopy(IFID, 32, PC, 0, 32);
 		setInstruction(instructionPart);
 		System.out.println("Instruction " + Arrays.toString(instructionPart));
 		System.out.println("Incremented PC " + Arrays.toString(PC));
