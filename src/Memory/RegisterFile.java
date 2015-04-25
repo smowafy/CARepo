@@ -26,4 +26,13 @@ public class RegisterFile {
 	public int[] getFromRegister(int register) {
 		return converter.IntegerToBits(file[register]);
 	}
+	public void insertIntoRegister(int input, int reg)
+	{
+		file[reg] = input;
+	}
+	
+	public int[] getFile()
+	{
+		return file;
+	}
 }
