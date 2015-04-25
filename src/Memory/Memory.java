@@ -24,8 +24,12 @@ public class Memory {
 	int memToReg, branch;
 	int regWrite;
 	int[] readData; // 32 if load
-	int[] loadResult; // result from loading data from memory
-
+	int[] loadResult;// result from loading data from memory
+	int loadByte;
+	int storeByte;
+	int loadUpperImmediate;
+	int loadByteUnsigned;
+	
 	public Memory(Register components) {
 		this.components = components.getRegister();
 		this.instructionMemory = Mips.Mips.instructionMemory;
@@ -49,6 +53,10 @@ public class Memory {
 		System.out.println("branch: " + branch);
 		System.out.println("memRead: " + memRead);
 		System.out.println("memWrite: " +  memWrite);
+		System.out.println("loadByte: " + loadByte);
+		System.out.println("loadUpperImmediate: " + loadUpperImmediate);
+		System.out.println("storeByte: " + storeByte);
+		System.out.println("loadByteUnsigned: " + loadByteUnsigned);
 		if (memWrite == 1) {
 			store(aluResult, value2);
 		} else if (memRead == 1) {
@@ -65,10 +73,15 @@ public class Memory {
 				Mips.Mips.PC = mux.select(Mips.Mips.PC,
 						converter.BitsToInteger(branchAdd), select);
 			}
+			else if(storeByte == 1){
+				storeByte(aluResult, value2);
+			}
 		}
-		new WriteBack(WBregister());
+		//new WriteBack(WBregister());
 
 	}
+
+	
 
 	public void initComponents() {
 		
@@ -85,6 +98,10 @@ public class Memory {
 		branch = components[105];
 		memRead = components[106];
 		memWrite = components[107];
+		loadByte = components[108];
+		storeByte = components[109];
+		loadUpperImmediate = components[110];
+		loadByteUnsigned = components[111];
 	}
 
 	public void store(int[] aluResult, int[] writeData) {
@@ -93,6 +110,15 @@ public class Memory {
 		data.memory.put(alu, value);
 	}
 
+	public void storeByte(int[] aluResult, int[] writeData) {
+		int alu = converter.BitsToInteger(aluResult);
+		int [] value = Mips.Mips.dataMemory.getFromMemory(alu);
+		for(int i = 28; i<31; i++)
+			value[i] = writeData[i];
+		data.memory.put(alu, converter.BitsToInteger(value));
+		
+	}
+	
 	public int[] load(int[] aluResult) {
 
 		return data.getFromMemory(aluResult);
@@ -105,7 +131,10 @@ public class Memory {
 		System.arraycopy(regDes, 0, regComponents, 64, 5);
 		regComponents[70] = regWrite;
 		regComponents[69] = memToReg;
-		Register r = new Register(71);
+		regComponents[71] = loadByte;
+		regComponents[72] = loadUpperImmediate;
+		regComponents[73] = loadByteUnsigned;
+		Register r = new Register(74);
 		r.insert(regComponents);
 		return r;
 	}

@@ -8,7 +8,7 @@ public class SignExtend {
 			output[i+16] = input[i];
 		}
 		for(int i = 0; i <16; i++) {
-			output[i] = input[15];
+			output[i] = input[0];
 		}
 		return output;
 	}

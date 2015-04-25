@@ -31,7 +31,7 @@ public class Decoder {
 		setInstruction(instructionPart);
 		System.out.println("Instruction " + Arrays.toString(instructionPart));
 		System.out.println("Incremented PC " + Arrays.toString(PC));
-		Register input = new Register(156);
+		Register input = new Register(163);
 		input.insert(this.IDEXregister());
 		new Executer(input);
 		
@@ -170,6 +170,9 @@ public class Decoder {
 		1-bit loadByte
 		1-bit storeByte
 		1-bit loadUpperImmediate
+		1-bit loadByteUnsigned
+		
+		6-bits function
 		
 	 * 
 	 * 
@@ -178,7 +181,7 @@ public class Decoder {
 	 */
 
 	public int[] IDEXregister() {
-		int[][] components = new int [12][];
+		int[][] components = new int [13][];
 		components[0] = PC;
 		//PC
 		components[1] = new int[32];
@@ -242,7 +245,7 @@ public class Decoder {
 			}
 		}
 		components[10] = isShift;
-		components[11] = new int[3];
+		components[11] = new int[4];
 		int opcode = converter.BitsToInteger(currentInstruction.getOpcode());
 		if (opcode == 0x20) {
 			components[11][0] = 1;
@@ -250,6 +253,13 @@ public class Decoder {
 			components[11][1] = 1;
 		} else if (opcode == 0xF) {
 			components[11][2] = 1;
+		} else if (opcode == 0x24) {
+			components[11][3] = 1;
+		}
+		
+		components[12] = new int[6];
+		if(currentInstruction instanceof RFormat) {
+			components[12] = ((RFormat)currentInstruction).getFn();
 		}
 		return combineArrays(components);
 		//The combineArrays method just concatenates all the arrays into a single array

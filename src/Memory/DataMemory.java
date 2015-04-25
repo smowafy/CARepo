@@ -26,7 +26,9 @@ public class DataMemory {
 	
 	public int[] getFromMemory(int[] address) {
 		int addressInt = converter.BitsToInteger(address);
-		int value = memory.get(addressInt);
+		int value = 0;
+		if(memory.contains(addressInt)){
+		value = memory.get(addressInt);}
 		return converter.IntegerToBits(value);
 	}
 	public int[] getFromMemory(int address) {

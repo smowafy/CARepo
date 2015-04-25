@@ -35,6 +35,10 @@ public class Executer {
 	int branch, memWrite, memRead; //Mem control signals
 	int shift; // 1 when the operation is shift
 	int[] shamt; // shift amount
+	int loadByte;
+	int storeByte;
+	int loadUpperImmediate;
+	int loadByteu;
 	
 	public Executer(Register components){
 		//this.memory = memory;
@@ -79,7 +83,14 @@ public class Executer {
 		System.out.println("AluOp: "+ Arrays.toString(aluOp));
 		System.out.println("Shift amount: "+ Arrays.toString(shamt));
 		System.out.println("shift: " +  shift);
+		System.out.println("loadByte: " +  loadByte);
+		System.out.println("storeByte: " +  storeByte);
+		System.out.println("loadUpperImmediate: " +  loadUpperImmediate);
+		System.out.println("loadByte unsigned: " +  loadByteu);
+		System.out.println("loadByte: " +  loadByte);
+		System.out.println("Function Code "+Arrays.toString(aluControlInput));
 		runExecuter();
+		
 	}
 	
 	public void initComponents(){
@@ -99,10 +110,15 @@ public class Executer {
 		System.arraycopy(components, 145, aluOp, 0, 2);
 		System.arraycopy(components, 147, shamt, 1, 5);
 		shift = components[152];
+		loadByte = components[153];
+		storeByte = components[154];
+		loadUpperImmediate = components[155];
+		loadByteu = components[156];
+		System.arraycopy(components,157 ,aluControlInput, 0, 6);
 	}
 	
 	public void setAluOperation(){
-		System.arraycopy(signExtendedAdd, 26, aluControlInput, 0, 6);
+		//System.arraycopy(signExtendedAdd, 26, aluControlInput, 0, 6);
 		aluControlResult=aluControl.selectOperation(aluOp, aluControlInput);
 	}
 	public void setDestinationReg(){
@@ -127,8 +143,8 @@ public class Executer {
 		bneZero = 1-beqZero;
 	}
 	public Register EXMEMregister(){
-		Register exmem = new Register(108);
-		int[] regComponents = new int[108];
+		Register exmem = new Register(112);
+		int[] regComponents = new int[112];
 		System.arraycopy(branchAdd, 0, regComponents, 0, 32);
 		regComponents[32]= beqZero;
 		regComponents[33]= bneZero;
@@ -140,6 +156,10 @@ public class Executer {
 		regComponents[105] = branch;
 		regComponents[106] = memRead;
 		regComponents[107] = memWrite;
+		regComponents[108] = loadByte;
+		regComponents[109] = storeByte;
+		regComponents[110] = loadUpperImmediate;
+		regComponents[111] = loadByteu;
 		exmem.insert(regComponents);
 		return exmem;
 	}
@@ -147,10 +167,11 @@ public class Executer {
 		callAlu();
 		setDestinationReg();
 		setBranchAddress();
-		//new Memory(EXMEMregister());
+		new Memory(EXMEMregister());
 		 
 	}
 	public static void main(String[] args) {
+		/*
 		BitsConverter conv = new BitsConverter();
 		int value1 = 6;
 		int value2 = 3;
@@ -181,7 +202,7 @@ public class Executer {
 		Register input = new Register(153);
 		input.insert(components);
 		Executer ex = new Executer(input);
-		/*
+		
 		int[] result = ex.runExecuter();
 		for (int i = 0; i < 32; i++) {
 			System.out.print(result[i]+" ");
