@@ -1,4 +1,6 @@
 package Executer;
+import java.util.Arrays;
+
 import Components.BitsConverter;
 import Components.Register;
 import Components.Adder;
@@ -60,7 +62,24 @@ public class Executer {
 		aluControlInput = new int[6];
 		aluControlResult = new int[4];
 		initComponents();
-		
+		System.out.println("ID/EX Register Components in order:");
+		System.out.println("Incremented PC " + Arrays.toString(incrementedPc));
+		System.out.println("RS Register value " + Arrays.toString(value1));
+		System.out.println("RT Register value "+ Arrays.toString(value2));
+		System.out.println("Sign Extended Address "+Arrays.toString(signExtendedAdd));
+		System.out.println("RT Register number "+Arrays.toString(rt));
+		System.out.println("RD Register number "+Arrays.toString(rd));
+		System.out.println("memToReg: " + memToReg);
+		System.out.println("regWrite: " + regWrite);
+		System.out.println("branch: " + branch);
+		System.out.println("memRead: " + memRead);
+		System.out.println("memWrite: " +  memWrite);
+		System.out.println("regDst: " + regDst);
+		System.out.println("aluSrc: " +aluSrc);
+		System.out.println("AluOp: "+ Arrays.toString(aluOp));
+		System.out.println("Shift amount: "+ Arrays.toString(shamt));
+		System.out.println("shift: " +  shift);
+		runExecuter();
 	}
 	
 	public void initComponents(){
@@ -132,7 +151,6 @@ public class Executer {
 		 
 	}
 	public static void main(String[] args) {
-		/*
 		BitsConverter conv = new BitsConverter();
 		int value1 = 6;
 		int value2 = 3;
@@ -163,6 +181,7 @@ public class Executer {
 		Register input = new Register(153);
 		input.insert(components);
 		Executer ex = new Executer(input);
+		/*
 		int[] result = ex.runExecuter();
 		for (int i = 0; i < 32; i++) {
 			System.out.print(result[i]+" ");
