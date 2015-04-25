@@ -31,8 +31,8 @@ public class Fetcher {
 		regFile = Mips.Mips.regFile;
 		int check = fetchNext();
 		if (check != 0) {
-			//new Decoder(fetch);
-			System.out.println(Arrays.toString(fetch.getRegister()));
+			new Decoder(fetch);
+			//System.out.println(Arrays.toString(fetch.getRegister()));
 			new Fetcher();
 		}
 		
