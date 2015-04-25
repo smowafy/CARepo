@@ -1,5 +1,8 @@
 package Fetcher;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import Components.Adder;
 import Components.BitsConverter;
 import Components.Register;
@@ -56,6 +59,7 @@ public class Fetcher {
 				Mips.PC = converter.BitsToInteger(jAddress);
 			} else
 				new Decoder(fetch);
+			System.out.println(Arrays.toString(fetch.getRegister()));
 			new Fetcher();
 		}
 
@@ -73,5 +77,14 @@ public class Fetcher {
 		}
 
 		return instruction;
+	}
+	public static void main(String[] args) {
+		ArrayList<String> arr = new ArrayList<String>();
+		arr.add("addi $t0 $zero 5");
+		arr.add("add $t1 $zero $t0");
+		arr.add("add $t1 $zero $t0");
+		arr.add("j 0");
+		Mips mips = new Mips(arr, 0);
+		Fetcher fetch = new Fetcher();
 	}
 }
