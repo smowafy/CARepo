@@ -165,6 +165,11 @@ public class Decoder {
 		3-bits MEM control signals
 		4-bits EX control signals
 		5-bits Shift amount
+		1-bit isShift
+		
+		1-bit loadByte
+		1-bit storeByte
+		1-bit loadUpperImmediate
 		
 	 * 
 	 * 
@@ -173,7 +178,7 @@ public class Decoder {
 	 */
 
 	public int[] IDEXregister() {
-		int[][] components = new int [11][];
+		int[][] components = new int [12][];
 		components[0] = PC;
 		//PC
 		components[1] = converter.IntegerToBits(0);
@@ -234,6 +239,15 @@ public class Decoder {
 			}
 		}
 		components[10] = isShift;
+		components[11] = new int[3];
+		int opcode = converter.BitsToInteger(currentInstruction.getOpcode());
+		if (opcode == 0x20) {
+			components[11][0] = 1;
+		} else if (opcode == 0x28) {
+			components[11][1] = 1;
+		} else if (opcode == 0xF) {
+			components[11][2] = 1;
+		}
 		return combineArrays(components);
 		//The combineArrays method just concatenates all the arrays into a single array
 	}
