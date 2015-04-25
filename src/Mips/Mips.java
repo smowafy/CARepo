@@ -21,11 +21,11 @@ public class Mips {
 	public static RegisterFile regFile;
 	public static int wbCalls = 4;
 	
-	public Mips(ArrayList<String> program, int startAddress) {
+	public Mips(ArrayList<String> program, int startAddress, RegisterFile regFile) {
 		PC = startAddress;
 		instructionMemory = new DataMemory();
 		dataMemory = new DataMemory();
-		regFile = new RegisterFile();
+		this.regFile = regFile;
 		parser = new Parser();
 		converter = new BitsConverter();
 		int[] instrCode;
@@ -144,12 +144,13 @@ public class Mips {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String line = br.readLine();
 		int address = Integer.parseInt(line);
+		RegisterFile reg = new RegisterFile();
 		while(!(line = br.readLine()).equals(""))
 		{
 			program.add(line);
 		}
 		@SuppressWarnings("unused")
-		Mips m = new Mips(program, address);
+		Mips m = new Mips(program, address, reg);
 
 	}
 }

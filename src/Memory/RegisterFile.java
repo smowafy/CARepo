@@ -8,7 +8,7 @@ public class RegisterFile {
 	BitsConverter converter;
 
 	public RegisterFile() {
-		file = new int [31];
+		file = new int [32];
 		converter = new BitsConverter();
 	}
 	
@@ -18,12 +18,21 @@ public class RegisterFile {
 		file[regIdx] = inputVal;
 	}
 	
+	public void insertIntoRegister(int input, int reg)
+	{
+		file[reg] = input;
+	}
 	public int[] getFromRegister(int[] register) {
 		int regIdx = converter.BitsToInterger(register, 5);
 		return converter.IntegerToBits(file[regIdx]);
 	}
-	
+
 	public int[] getFromRegister(int register) {
 		return converter.IntegerToBits(file[register]);
+	}
+	
+	public int[] getFile()
+	{
+		return file;
 	}
 }
