@@ -27,6 +27,9 @@ public class Decoder {
 		int[] instructionPart = new int[32];
 		System.arraycopy(IFID, 0, instructionPart, 0, 32);
 		setInstruction(instructionPart);
+		System.out.println("Instruction " + Arrays.toString(instructionPart));
+		System.out.println("Incremented PC " + Arrays.toString(PC));
+		executerobj = new Executer(new Register(this.IDEXregister()));
 		
 	}
 
