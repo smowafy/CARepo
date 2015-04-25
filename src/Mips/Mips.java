@@ -21,11 +21,12 @@ public class Mips {
 	public static RegisterFile regFile;
 	public static int wbCalls = 4;
 	
-	public Mips(ArrayList<String> program, int startAddress) {
+	@SuppressWarnings("static-access")
+	public Mips(ArrayList<String> program, int startAddress, RegisterFile regFile) {
 		PC = startAddress;
 		instructionMemory = new DataMemory();
 		dataMemory = new DataMemory();
-		regFile = new RegisterFile();
+		this.regFile = regFile;
 		parser = new Parser();
 		converter = new BitsConverter();
 		int[] instrCode;
@@ -40,7 +41,6 @@ public class Mips {
 		}
 		instrCode = new int[32];
 		instructionMemory.insertIntoMemory(instrCode, PC+i*4);
-		System.out.println("Fetching...");
 		new Fetcher();
 
 	}
@@ -145,21 +145,13 @@ public class Mips {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String line = br.readLine();
 		int address = Integer.parseInt(line);
+		RegisterFile reg = new RegisterFile();
 		while(!(line = br.readLine()).equals(""))
 		{
 			program.add(line);
 		}
 		@SuppressWarnings("unused")
-		Mips m = new Mips(program, address);
-		
-		System.out.println("Register contents: ");
-		for(int i = 0; i < 32; i++) {
-			System.out.println("    "+m.converter.BitsToInteger(m.regFile.getFromRegister(i)));
-		}
-		System.out.println("Memory contents: ");
-		for(int i = 0; i < 32; i++) {
-			System.out.println("    "+m.converter.BitsToInteger(m.dataMemory.getFromMemory(i)));
-		}
-		
+		Mips m = new Mips(program, address, reg);
+
 	}
 }
