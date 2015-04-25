@@ -28,11 +28,19 @@ public class Memory {
 		this.instructionMemory = Mips.Mips.instructionMemory;
 		this.data = Mips.Mips.dataMemory;
 		converter = new BitsConverter();
-		this.memRead = memRead;
-		this.memWrite = memWrite;
-		this.aluResult = aluResult;
-		this.beqZero = beqZero;
 		initComponents();
+		System.out.println("EX/MEM Register Components in order:");
+		System.out.println("branchAdd: " + Arrays.toString(branchAdd));
+		System.out.println("beqZero: " + beqZero);
+		System.out.println("bneZero: "+ benZero);
+		System.out.println("aluResult: "+Arrays.toString(aluResult));
+		System.out.println("Read value2: "+Arrays.toString(value2));
+		System.out.println("registerDstResult: "+Arrays.toString(regDes));
+		System.out.println("memToReg: " + memToReg);
+		System.out.println("regWrite: " + regWrite);
+		System.out.println("branch: " + branch);
+		System.out.println("memRead: " + memRead);
+		System.out.println("memWrite: " +  memWrite);
 		if (memWrite == 1) {
 			store(aluResult, value2);
 		} else if (memRead == 1) {
