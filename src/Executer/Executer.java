@@ -102,7 +102,7 @@ public class Executer {
 	}
 	
 	public void setAluOperation(){
-		System.arraycopy(signExtendedAdd, 0, aluControlInput, 0, 6);
+		System.arraycopy(signExtendedAdd, 26, aluControlInput, 0, 6);
 		aluControlResult=aluControl.selectOperation(aluOp, aluControlInput);
 	}
 	public void setDestinationReg(){
@@ -160,7 +160,7 @@ public class Executer {
 		System.arraycopy(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},0,components, 0,  32);
 		System.arraycopy( arr1, 0,components, 32, 32);
 		System.arraycopy( arr2, 0,components, 64, 32);
-		System.arraycopy(new int[]{0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},0,components, 96,32);
+		System.arraycopy(new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},0,components, 96,32);
 		System.arraycopy(new int[]{0,0,1,0,0},0,components, 128,  5);
 		System.arraycopy(new int[]{0,0,1,0,1},0,components, 133, 5);
 		components[138] = 0; // memToReg
@@ -177,7 +177,7 @@ public class Executer {
 		components[149] = 0;
 		components[150] = 0;
 		components[151] = 1;
-		components[152] = 1;
+		components[152] = 1;//shamt
 		Register input = new Register(153);
 		input.insert(components);
 		Executer ex = new Executer(input);
