@@ -1,5 +1,7 @@
 package Memory;
 
+import java.util.Arrays;
+
 import Memory.DataMemory;
 import Components.BitsConverter;
 import Components.MUX;
@@ -32,7 +34,7 @@ public class Memory {
 		System.out.println("EX/MEM Register Components in order:");
 		System.out.println("branchAdd: " + Arrays.toString(branchAdd));
 		System.out.println("beqZero: " + beqZero);
-		System.out.println("bneZero: "+ benZero);
+		System.out.println("bneZero: "+ bneZero);
 		System.out.println("aluResult: "+Arrays.toString(aluResult));
 		System.out.println("Read value2: "+Arrays.toString(value2));
 		System.out.println("registerDstResult: "+Arrays.toString(regDes));
