@@ -9,6 +9,7 @@ import Instructions.Instruction;
 import Instructions.JFormat;
 import Instructions.RFormat;
 import Memory.RegisterFile;
+import Executer.Executer;
 
 public class Decoder {
 
@@ -29,7 +30,9 @@ public class Decoder {
 		setInstruction(instructionPart);
 		System.out.println("Instruction " + Arrays.toString(instructionPart));
 		System.out.println("Incremented PC " + Arrays.toString(PC));
-		executerobj = new Executer(new Register(this.IDEXregister()));
+		Register input = new Register(153);
+		input.insert(this.IDEXregister());
+		new Executer(input);
 		
 	}
 
