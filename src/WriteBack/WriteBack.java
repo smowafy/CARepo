@@ -15,6 +15,7 @@ public class WriteBack {
 
 	public WriteBack(Register instruction) {
 		registerFile = Mips.Mips.regFile;
+		//registerFile = new RegisterFile();
 		converter = new BitsConverter();
 		inputSrc = new MUX();
 		writeBack(instruction.getRegister());
@@ -34,7 +35,7 @@ public class WriteBack {
 		boolean memToReg = (instruction[69] == 1) ? true : false;
 		/* if register write = 0 then nothing to do */
 		if (regWrite) {
-			for (int j = 5; j >= 0; j--, i--) {
+			for (int j = 4; j >= 0; j--, i--) {
 				targetRegister[j] = instruction[i];
 			}
 			/* if ALU input, skip memory part */

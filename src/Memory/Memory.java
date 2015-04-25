@@ -1,5 +1,7 @@
 package Memory;
 
+import java.util.Arrays;
+
 import Memory.DataMemory;
 import Components.BitsConverter;
 import Components.MUX;
@@ -22,21 +24,35 @@ public class Memory {
 	int memToReg, branch;
 	int regWrite;
 	int[] readData; // 32 if load
+	int[] loadResult; // result from loading data from memory
 
 	public Memory(Register components) {
 		this.components = components.getRegister();
 		this.instructionMemory = Mips.Mips.instructionMemory;
 		this.data = Mips.Mips.dataMemory;
 		converter = new BitsConverter();
-		this.memRead = memRead;
-		this.memWrite = memWrite;
-		this.aluResult = aluResult;
-		this.beqZero = beqZero;
+		branchAdd = new int [32];
+		aluResult = new int[32];
+		value2 = new int[32];
+		regDes = new int [5];
+		loadResult = new int[32];
 		initComponents();
+		System.out.println("EX/MEM Register Components in order:");
+		System.out.println("branchAdd: " + Arrays.toString(branchAdd));
+		System.out.println("beqZero: " + beqZero);
+		System.out.println("bneZero: "+ bneZero);
+		System.out.println("aluResult: "+Arrays.toString(aluResult));
+		System.out.println("Read value2: "+Arrays.toString(value2));
+		System.out.println("registerDstResult: "+Arrays.toString(regDes));
+		System.out.println("memToReg: " + memToReg);
+		System.out.println("regWrite: " + regWrite);
+		System.out.println("branch: " + branch);
+		System.out.println("memRead: " + memRead);
+		System.out.println("memWrite: " +  memWrite);
 		if (memWrite == 1) {
 			store(aluResult, value2);
 		} else if (memRead == 1) {
-			load(aluResult);
+			loadResult =load(aluResult);
 		} else if (beqZero == 1) {
 			int select = branch & beqZero;
 			MUX mux = new MUX();
@@ -55,13 +71,14 @@ public class Memory {
 	}
 
 	public void initComponents() {
+		
 		System.arraycopy(components, 0, branchAdd, 0, 32);
 		beqZero = components[32];
 		bneZero = components[33];
 		// System.arraycopy(components, 32, zero, 0, 1);
 		System.arraycopy(components, 34, aluResult, 0, 32);
 		System.arraycopy(components, 66, value2, 0, 32);
-		System.arraycopy(components, 98, regDes, 0, 32);
+		System.arraycopy(components, 98, regDes, 0, 5);
 		// System.arraycopy(components, 102, memToReg, 0, 5);
 		memToReg = components[103];
 		regWrite = components[104];
@@ -84,7 +101,7 @@ public class Memory {
 	public Register WBregister() {
 		int[] regComponents = new int[71];
 		System.arraycopy(aluResult, 0, regComponents, 0, 32);
-		System.arraycopy(load(aluResult), 0, regComponents, 32, 32);
+		System.arraycopy(loadResult, 0, regComponents, 32, 32);
 		System.arraycopy(regDes, 0, regComponents, 64, 5);
 		regComponents[70] = regWrite;
 		regComponents[69] = memToReg;
