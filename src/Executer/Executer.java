@@ -147,7 +147,7 @@ public class Executer {
 		callAlu();
 		setDestinationReg();
 		setBranchAddress();
-		new Memory(EXMEMregister());
+		//new Memory(EXMEMregister());
 		 
 	}
 	public static void main(String[] args) {

@@ -26,12 +26,12 @@ public class Decoder {
 		extender = new SignExtend();
 		regFile = Mips.Mips.regFile;
 		int[] instructionPart = new int[32];
-		System.arraycopy(IFID, 0, instructionPart, 0, 32);
-		System.arraycopy(IFID, 32, PC, 0, 32);
+		System.arraycopy(IFID, 0, PC, 0, 32);
+		System.arraycopy(IFID, 32, instructionPart, 0, 32);
 		setInstruction(instructionPart);
 		System.out.println("Instruction " + Arrays.toString(instructionPart));
 		System.out.println("Incremented PC " + Arrays.toString(PC));
-		Register input = new Register(153);
+		Register input = new Register(156);
 		input.insert(this.IDEXregister());
 		new Executer(input);
 		
@@ -181,7 +181,8 @@ public class Decoder {
 		int[][] components = new int [12][];
 		components[0] = PC;
 		//PC
-		components[1] = converter.IntegerToBits(0);
+		components[1] = new int[32];
+		components[2] = new int[32];
 		if (currentInstruction instanceof RFormat) {
 			components[1] = ((RFormat)currentInstruction).getRs();
 			components[1] = regFile.getFromRegister(components[1]);
@@ -196,12 +197,13 @@ public class Decoder {
 			components[2] = regFile.getFromRegister(components[2]);
 		}
 		//load the values in registers rs and rt
-		components[3] = converter.IntegerToBits(0);
+		components[3] = new int[32];
 		if (currentInstruction instanceof IFormat) {
 			components[3] = extender.extend(((IFormat)currentInstruction).getOffset());
 		}
 		//load the offset in case of I-format
-		components[4] = components[5] = converter.IntegerToBits(0);
+		components[4] = new int [5];
+		components[5] = new int [5];
 		if (currentInstruction instanceof RFormat) {
 			components[4] = ((RFormat)currentInstruction).getRt();
 			components[5] = ((RFormat)currentInstruction).getRd();
@@ -226,6 +228,7 @@ public class Decoder {
 		EXSignals[2] = this.getALUOp()[0];
 		EXSignals[3] = this.getALUOp()[1];
 		components[8] = EXSignals;
+		components[9] = new int[5];
 		//load Execute signals in this order: RegDst, ALUSrc, 2 bits of ALUOp
 		if (currentInstruction instanceof RFormat) {
 			components[9] = ((RFormat)currentInstruction).getShamt();
@@ -272,6 +275,7 @@ public class Decoder {
 		for (int i = 0; i < arrays.length; i++) {
 			len += arrays[i].length;
 		}
+		System.out.println("total length is " + len);
 		int[] result = new int[len];
 		for (int i = 0; i < arrays.length; i++) {
 			System.arraycopy(arrays[i], 0, result, acc, arrays[i].length);

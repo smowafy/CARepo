@@ -32,7 +32,7 @@ public class Fetcher {
 		int check = fetchNext();
 		if (check != 0) {
 			new Decoder(fetch);
-			//System.out.println(Arrays.toString(fetch.getRegister()));
+			System.out.println("fetcher register " + Arrays.toString(fetch.getRegister()));
 			new Fetcher();
 		}
 		
